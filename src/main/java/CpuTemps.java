@@ -11,10 +11,9 @@ import java.util.StringJoiner;
 
 public class CpuTemps extends ListenerAdapter {
 
-
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
-        if(event.getMessage().getContentRaw().equalsIgnoreCase("!cpu")){
+        if(event.getMessage().getContentRaw().equalsIgnoreCase("!cpuTemp")){
             NetDataGetter netDataGetter = new NetDataGetter();
             NetDataParams params = new NetDataParams("sensors.coretemp_isa_0000_temperature");
             params.setPoints("1");
@@ -22,7 +21,7 @@ public class CpuTemps extends ListenerAdapter {
             try {
                 data = netDataGetter.getInfo(params);
             } catch (IOException e) {
-                e.printStackTrace();
+                event.getChannel().sendMessage("Can't get info from Server");
             }
             HashMap<String, Integer> dataMap = new HashMap<>();
             ArrayList<String> keys = new ArrayList<>();

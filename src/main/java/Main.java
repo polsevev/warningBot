@@ -12,9 +12,10 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) throws LoginException, InterruptedException, IOException {
-        JDA jda = JDABuilder.createDefault("ODI1MDQ2MDc1MDgwNTcyOTg5.YF4OCA.esBROVI49As0dpzvyx8CQ6eGdRM").build();
+        JDA jda = JDABuilder.createDefault("ODI1MDQ2MDc1MDgwNTcyOTg5.YF4OCA.D9ll8UsnwgQZdizsWR9R3vT8L-E").build();
         jda.awaitReady();
         jda.addEventListener(new CpuTemps());
+        jda.addEventListener(new CpuFreq());
         User user =  jda.retrieveUserById("102050136762372096").complete();
         //sendMessage(user);
 
@@ -27,6 +28,9 @@ public class Main {
         params.setPoints("1");
 
         JSONObject cpuInfo = netDataGetter.getInfo(params);
+
+
+
 
     }
 }
