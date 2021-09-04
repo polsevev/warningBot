@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) throws LoginException, InterruptedException, IOException {
-        JDA jda = JDABuilder.createDefault("ODI1MDQ2MDc1MDgwNTcyOTg5.YF4OCA.D9ll8UsnwgQZdizsWR9R3vT8L-E").build();
+        JDA jda = JDABuilder.createDefault("").build();
         jda.awaitReady();
         jda.addEventListener(new CpuTemps());
         jda.addEventListener(new CpuFreq());
