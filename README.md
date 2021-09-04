@@ -31,7 +31,7 @@ Returns current cpu temps in this format:
 Not avalible
 
 
-##Future functionality
+## Future functionality
 ```
   Draw frequency and temperature over time on graph and send as image
   Add more graphs that the bot can interract with
