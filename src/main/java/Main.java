@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String[] args) throws LoginException, InterruptedException, IOException {
-        JDA jda = JDABuilder.createDefault("ODI1MDQ2MDc1MDgwNTcyOTg5.YF4OCA.DmOT0WAAohIbM5t9u_h56sinl8A").build();
+        JDA jda = JDABuilder.createDefault("").build();
         jda.awaitReady();
         jda.addEventListener(new CpuTemps());
         jda.addEventListener(new CpuFreq());
