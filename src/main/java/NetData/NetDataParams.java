@@ -1,3 +1,5 @@
+package NetData;
+
 import java.util.StringJoiner;
 
 public class NetDataParams {

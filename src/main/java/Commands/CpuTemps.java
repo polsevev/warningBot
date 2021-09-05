@@ -1,3 +1,8 @@
+package Commands;
+
+import NetData.NetDataGetter;
+import NetData.NetDataParams;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -6,16 +11,18 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.StringJoiner;
 
-public class CpuFreq extends ListenerAdapter {
+public class CpuTemps extends ListenerAdapter {
 
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
-        if(event.getMessage().getContentRaw().equalsIgnoreCase("!cpufreq")){
+        if(event.getAuthor().getId() != "102050136762372096"){
+            event.getChannel().sendMessage("Permission denied u hackerman");
+        }
+        if(event.getMessage().getContentRaw().equalsIgnoreCase("!cpuTemp")){
             NetDataGetter netDataGetter = new NetDataGetter();
-            NetDataParams params = new NetDataParams("cpu.cpufreq");
+            NetDataParams params = new NetDataParams("sensors.coretemp_isa_0000_temperature");
             params.setPoints("1");
             JSONObject data = new JSONObject();
             try {
@@ -23,10 +30,6 @@ public class CpuFreq extends ListenerAdapter {
             } catch (IOException e) {
                 event.getChannel().sendMessage("Can't get info from Server");
             }
-
-            System.out.println(data.toString());
-
-
             HashMap<String, Integer> dataMap = new HashMap<>();
             ArrayList<String> keys = new ArrayList<>();
             Integer counter = 0;
@@ -36,8 +39,8 @@ public class CpuFreq extends ListenerAdapter {
                         counter++;
                         continue;
                     }
-                    Double freq = data.getJSONArray("data").getJSONArray(0).getDouble(counter);
-                    dataMap.put((String) lol, freq.intValue());
+                    Double temp = data.getJSONArray("data").getJSONArray(0).getDouble(counter);
+                    dataMap.put((String) lol, temp.intValue());
                     keys.add((String) lol);
                 }
                 counter++;
@@ -45,19 +48,18 @@ public class CpuFreq extends ListenerAdapter {
 
             StringJoiner response = new StringJoiner("\n");
 
-            response.add("Frequency  of Labeouf CPU is:");
+            response.add("Temperature of Labeouf CPU is:");
 
             for (String key: keys) {
-                response.add(key + " : " + dataMap.get(key) + " Mhz");
+                if(key == "time"){
+                    continue;
+                }
+                response.add(key + " : " + dataMap.get(key) + " Celsius");
             }
 
             System.out.println(dataMap.toString());
 
             event.getChannel().sendMessage(response.toString()).queue();
-
-
-
-
         }
     }
 }

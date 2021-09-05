@@ -1,36 +1,25 @@
+import Commands.CpuFreq;
+import Commands.CpuTemps;
+import Poller.TempPoller;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.*;
-import org.json.JSONObject;
 
 import javax.security.auth.login.LoginException;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
     public static void main(String[] args) throws LoginException, InterruptedException, IOException {
-        JDA jda = JDABuilder.createDefault("").build();
+        JDA jda = JDABuilder.createDefault("ODI1MDQ2MDc1MDgwNTcyOTg5.YF4OCA.DmOT0WAAohIbM5t9u_h56sinl8A").build();
         jda.awaitReady();
         jda.addEventListener(new CpuTemps());
         jda.addEventListener(new CpuFreq());
-        User user =  jda.retrieveUserById("102050136762372096").complete();
-        //sendMessage(user);
-
-        Guild guild = jda.getGuildById("825046718046928936");
-
-
-        NetDataGetter netDataGetter = new NetDataGetter();
-
-        NetDataParams params = new NetDataParams("system.cpu");
-        params.setPoints("1");
-
-        JSONObject cpuInfo = netDataGetter.getInfo(params);
-
-
-
-
+        TempPoller poller = new TempPoller(jda);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(poller, 0, 15, TimeUnit.MINUTES);
     }
+
 }
